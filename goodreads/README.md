@@ -29,7 +29,7 @@ uploaded = files.upload()
 file_name = list(uploaded.keys())[0]  
 df = pd.read_csv('goodreads.csv')
 
-# Select numeric columns
+
 numeric_data = df.select_dtypes(include=[np.number])
 
 
