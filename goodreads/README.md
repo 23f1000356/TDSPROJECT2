@@ -64,6 +64,24 @@ print("\nSummary of Outliers Detected:\n", total_outliers)
 
 z_scores_df = pd.DataFrame(z_scores, columns=numeric_data.columns, index=numeric_data.index)
 
+#correlation analysis
+
+from google.colab import files
+uploaded = files.upload()
+file_name = list(uploaded.keys())[0]
+df = pd.read_csv(file_name)
+
+numeric_columns = df.select_dtypes(include=[np.number])
+
+
+correlation_matrix = numeric_columns.corr()
+
+print("\n--- Correlation Matrix ---")
+sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
+plt.title("Correlation Matrix")
+plt.show()
+
+
 print("\n--- Anomalous Rows Detected Using Z-Score ---")
 anomalous_rows = numeric_data[(z_scores_df > threshold).any(axis=1)]
 print(f"Total Anomalous Rows Detected: {len(anomalous_rows)}")
