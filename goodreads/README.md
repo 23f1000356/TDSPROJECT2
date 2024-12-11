@@ -1,90 +1,24 @@
-!pip install pandas matplotlib --quiet
+Data Analysis Report for Goodreads.csv
+Summary
+To create a summary of the dataset goodreads.csv without direct access to the file, I will outline a general approach and key points typically included in a dataset analysis. Here’s how you might structure your summary based on common attributes typically found in Goodreads datasets.
 
-
-import pandas as pd
-
-from google.colab import files
-uploaded = files.upload()
-file_name = list(uploaded.keys())[0]
-df = pd.read_csv('goodreads.csv')
-
-
-print("Dataset Preview:\n", df.head())
-print("\nDataset Information:\n")
-df.info()
-
-print("\nSummary Statistics (Numerical Columns):\n", df.describe())
-
-
-missing_values = df.isnull().sum()
-print("\nMissing Values (Count per Column):\n", missing_values)
-
-missing_percentage = (df.isnull().mean() * 100).round(2)
-print("\nMissing Values (Percentage per Column):\n", missing_percentage)
-
-
-#outlier analysis
-
-from google.colab import files
-uploaded = files.upload()  
-file_name = list(uploaded.keys())[0]  
-df = pd.read_csv('goodreads.csv')
-
-
-numeric_data = df.select_dtypes(include=[np.number])
-
-
-print("\n--- Outliers using Z-Score Method ---")
-z_scores = np.abs(zscore(numeric_data.dropna()))
-threshold = 3
-outliers_zscore = (z_scores > threshold).sum(axis=0)
-print("Number of outliers detected per column:\n", outliers_zscore)
-
-print("\n--- Outliers using IQR Method ---")
-Q1 = numeric_data.quantile(0.25)
-Q3 = numeric_data.quantile(0.75)
-IQR = Q3 - Q1
-lower_bound = Q1 - 1.5 * IQR
-upper_bound = Q3 + 1.5 * IQR
-outliers_iqr = ((numeric_data < lower_bound) | (numeric_data > upper_bound)).sum()
-print("Number of outliers detected per column:\n", outliers_iqr)
-
-print("\n--- Boxplot Visualization ---")
-for column in numeric_data.columns:
-    sns.boxplot(x=numeric_data[column])
-    plt.title(f'Boxplot for {column}')
-    plt.show()
-
-
-total_outliers = pd.DataFrame({
-    "Z-Score Outliers": outliers_zscore,
-    "IQR Outliers": outliers_iqr
-})
-print("\nSummary of Outliers Detected:\n", total_outliers)
-
-z_scores_df = pd.DataFrame(z_scores, columns=numeric_data.columns, index=numeric_data.index)
-
-#correlation analysis
-
-from google.colab import files
-uploaded = files.upload()
-file_name = list(uploaded.keys())[0]
-df = pd.read_csv(file_name)
-
-numeric_columns = df.select_dtypes(include=[np.number])
-
-
-correlation_matrix = numeric_columns.corr()
-
-print("\n--- Correlation Matrix ---")
-sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
-plt.title("Correlation Matrix")
-plt.show()
-
-
-print("\n--- Anomalous Rows Detected Using Z-Score ---")
-anomalous_rows = numeric_data[(z_scores_df > threshold).any(axis=1)]
-print(f"Total Anomalous Rows Detected: {len(anomalous_rows)}")
-if not anomalous_rows.empty:
-    display(anomalous_rows)
-
+Summary of goodreads.csv
+Overview of Key Statistics
+Number of Records: Count the total number of entries in the dataset.
+Attributes Overview: List the main columns in the dataset, which may include attributes such as:
+Book Title
+Author
+Rating
+Number of Ratings
+Genres
+Pages
+Date Published
+Descriptive Statistics:
+Rating: Calculate the mean, median, mode, standard deviation, and range of book ratings.
+Pages: Determine the average, minimum, and maximum number of pages among the books.
+Publication Year: Note the range of publication years and identify trends over different decades.
+Top Trends or Correlations
+Rating Trends: Analyze how the mean rating varies across different genres. Identify which genres have the highest average ratings.
+Correlation Analysis:
+Investigate the correlation between the number of ratings and the overall book rating to uncover if popular books tend to have higher or lower ratings.
+Look at the relationship between page count and ratings, exploring whether longer books receive better
