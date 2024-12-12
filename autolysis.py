@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from scipy.cluster.hierarchy import dendrogram, linkage
 
-# Load the dataset
+
 file_path = "goodreads.csv"
 df = pd.read_csv(file_path)
 
-# Convert 'original_publication_year' to numeric
+
 df['original_publication_year'] = pd.to_numeric(df['original_publication_year'], errors='coerce')
 
 # Summary Statistics
